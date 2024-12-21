@@ -8,9 +8,21 @@ Original file is located at
 """
 
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv('/content/Iris.csv')
 
+df.sample(5)
+
+columns_to_scale = ['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm']
+
+# Create a StandardScaler object
+scaler = StandardScaler()
+
+# Fit and transform the selected columns
+df[columns_to_scale] = scaler.fit_transform(df[columns_to_scale])
+
+# Display the scaled DataFrame
 df.sample(5)
 
 X = df[["SepalLengthCm","SepalWidthCm","PetalLengthCm","PetalWidthCm"]]   # input features
@@ -19,7 +31,7 @@ Y = df["Species"] # taget variable
 from sklearn.linear_model import LogisticRegression
 
 #step:1 initialise the class method
-model = LogisticRegression()
+model = LogisticRegression(penalty='l1',random_state=42, solver='liblinear',max_iter=50)
 
 #step:2 train the model with historical training data
 model.fit(X,Y)
